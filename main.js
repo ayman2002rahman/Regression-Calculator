@@ -54,7 +54,7 @@ function shuntingYardAlgorithm(tokens) {
         }
         else if(tokens[i].getType() == 'operator') {
             if(operatorStack.length > 0) {
-                while(operatorStack[operatorStack.length - 1].getLexeme() != '(' && (operatorStack[operatorStack.length - 1].getPrecedence() > tokens[i].getPrecedence()) || (operatorStack[operatorStack.length - 1].getPrecedence == tokens[i].getPrecedence() && tokens[i].getLeftAssociativity())) { //this loop is not ever becoming true
+                while(operatorStack[operatorStack.length - 1].getLexeme() != '(' && (operatorStack[operatorStack.length - 1].getPrecedence() > tokens[i].getPrecedence()) || (operatorStack[operatorStack.length - 1].getPrecedence() == tokens[i].getPrecedence() && tokens[i].getleftAssociativity())) { //check this condition
                     console.log('yessirski');
                     output.push(operatorStack.pop());
                 }
