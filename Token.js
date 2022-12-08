@@ -1,42 +1,73 @@
+//Maybe reorgine the switches into if else statements to make it more consice for sets sicne there is a lot of repeated code
 class Token {
     constructor(lexeme) {
         this.lexeme = lexeme //Lexeme is a charcter for both types
         switch(lexeme) {
-            case '^':
+            case "^":
                 this.type = "operator"
                 this.precedence = 4;
                 this.leftAssociativity = false;
                 break;
-            case '*':
+            case "*":
                 this.type = "operator"
                 this.precedence = 3;
                 this.leftAssociativity = true;
                 break;
-            case '/':
+            case "/":
                 this.type = "operator"
                 this.precedence = 3;
                 this.leftAssociativity = true;
                 break;
-            case '+':
+            case "+":
                 this.type = "operator"
                 this.precedence = 2;
                 this.leftAssociativity = true;
                 break;
-            case '-':
+            case "-":
                 this.type = "operator"
                 this.precedence = 2;
                 this.leftAssociativity = true;
                 break;
-            case '(':
-                this.type = 'parentheses';
+            case "(":
+                this.type = "parentheses";
                 this.precedence = null;
                 this.leftAssociativity = null;
                 break;
-            case ')':
-                this.type = 'parentheses';
+            case ")":
+                this.type = "parentheses";
                 this.precedence = null;
                 this.leftAssociativity = null  ;      
-                break;  
+                break;
+            case "sin":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "cos":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "tan":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "csc":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "sec":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "cot":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
             default:
                 this.type = "number";
                 this.precedence = null;
@@ -45,6 +76,9 @@ class Token {
     }
     getLexeme() {
         return this.lexeme;
+    }
+    setLexeme(lexeme) {
+        this.lexeme = lexeme;
     }
     getType() {
         return this.type;
