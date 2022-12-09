@@ -68,6 +68,16 @@ class Token {
                 this.precedence = null;
                 this.leftAssociativity = null;
                 break;
+            case "log":
+                this.type = "function";
+                this.precedence = null;
+                this.leftAssociativity = null;
+                break;
+            case "ln":
+                this.type = "function";
+                this.precendence = null;
+                this.leftAssociativty;
+                break;
             default:
                 this.type = "number";
                 this.precedence = null;
@@ -91,3 +101,5 @@ class Token {
     }
 }
 module.exports = Token;
+
+//perhaps can add more elementry functrions like inverse trig and hyperbolic trig later
