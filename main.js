@@ -1,15 +1,15 @@
 //Create a function that takes the string representing the expression that the user made and build an array of tokens. 
 //Create a parser that validates the array of tokens is part of the CFG
 //import Token from './Token.js';
-const Token = require("./Token.js");
+//const Token = require("./Token.js");
 //const Vector = require("./Vector.js");
 //import { Token } from './Vector.js';
+import { Token } from '/Token.js'
 
 function peek(stack) {
     return stack[stack.length - 1];
 }
 
-//Perhaps use peek() function instead of operatorStack[operatorStack.length - 1]
 function shuntingYardAlgorithm(tokens) {
     var output = [];
     var operatorStack = [];
@@ -20,7 +20,7 @@ function shuntingYardAlgorithm(tokens) {
             operatorStack.push(tokens[i]);
         else if(tokens[i].getType() == "operator") {
             if(operatorStack.length > 0) {
-                while(operatorStack[operatorStack.length - 1].getLexeme() != "(" && (operatorStack[operatorStack.length - 1].getPrecedence() > tokens[i].getPrecedence()) || (operatorStack[operatorStack.length - 1].getPrecedence() == tokens[i].getPrecedence() && tokens[i].getleftAssociativity())) { //check this condition
+                while(peek(operatorStack).getLexeme() != "(" && (peek(operatorStack).getPrecedence() > tokens[i].getPrecedence()) || (peek(operatorStack).getPrecedence() == tokens[i].getPrecedence() && tokens[i].getleftAssociativity())) { //check this condition
                     output.push(operatorStack.pop());
                     if(operatorStack.length == 0)
                         break;
@@ -31,13 +31,13 @@ function shuntingYardAlgorithm(tokens) {
         else if(tokens[i].getLexeme() == "(")
             operatorStack.push(tokens[i]);
         else if(tokens[i].getLexeme() == ")") {
-            while(operatorStack[operatorStack.length - 1].getLexeme() != "(") {
+            while(peek(operatorStack).getLexeme() != "(") {
                 output.push(operatorStack.pop());
             } 
             operatorStack.pop();
             //Check "function" type token here. Ex: sin(x) log(x) ln(x) x!
             if(operatorStack.length > 0) {
-                if(operatorStack[operatorStack.length - 1].getType() == "function") {
+                if(peek(operatorStack).getType() == "function") {
                     //console.log("pushed");
                     output.push(operatorStack.pop());
                 }
@@ -45,7 +45,6 @@ function shuntingYardAlgorithm(tokens) {
         }
     }
     while(operatorStack.length > 0) {
-        //console.log(operatorStack[operatorStack.length - 1].getLexeme());
         output.push(operatorStack.pop());
     }
     return output;
@@ -94,13 +93,13 @@ function evaluateRPN(expression) { //expression is an array of tokens in RPN
             value =  Math.tan(parseFloat(expression[i - 1].getLexeme()));
             break;
         case "csc":
-            value =  Math.csc(parseFloat(expression[i - 1].getLexeme()));
+            value =  1 / Math.sin(parseFloat(expression[i - 1].getLexeme()));
             break;
         case "sec":
-            value =  Math.sec(parseFloat(expression[i - 1].getLexeme()));
+            value =  1 / Math.cos(parseFloat(expression[i - 1].getLexeme()));
             break;
         case "cot":
-            value =  Math.cot(parseFloat(expression[i - 1].getLexeme()));
+            value =  1 / Math.tan(parseFloat(expression[i - 1].getLexeme()));
             break;
         case "log":
             value =  Math.log10(parseFloat(expression[i - 1].getLexeme()));
@@ -113,7 +112,7 @@ function evaluateRPN(expression) { //expression is an array of tokens in RPN
     evaluatedExpression.push(new Token(value.toString()))
     i++;
     
-    //Add the remainign tokens after the first operator to the output
+    //Add the remaining tokens after the first operator to the output
     while(i < expression.length) {
         evaluatedExpression.push(expression[i]);
         i++;  
@@ -122,10 +121,11 @@ function evaluateRPN(expression) { //expression is an array of tokens in RPN
     return evaluateRPN(evaluatedExpression);
 }
 
+//Be careful with inputs that are no tin the domain (need to catch that and throw some error in this function
 //Evaluates the equation at a specified x value
 //Ex: if the equation is 2/(x^2) then evaluating it at x = 3 returns 0.22222
 function evaluateEquation(expression, x) {
-    //Loops through the expression array and replaces the "x" tokens withe the value inputed for x
+    //Loops through the expression array and replaces the "x" tokens with the value inputed for x
     for(var i = 0; i < expression.length; i++) {
         if(expression[i].getLexeme() == "x")
             expression[i].setLexeme(x.toString());
@@ -142,7 +142,7 @@ console.log(evaluateRPN(rpn).getLexeme());*/
 //var equation = [new Token("x"), new Token("^"), new Token("2")];
 //var equation = [new Token("4"), new Token("+"), new Token("log"), new Token("("), new Token("x"), new Token(")")];
 var equation = [new Token("sin"), new Token("x"), new Token("^"), new Token("2")];
-console.log(evaluateEquation(shuntingYardAlgorithm(equation), 3.1415).getLexeme());
+document.body.innerHTML = '<h1>' + evaluateEquation(shuntingYardAlgorithm(equation), 3.1415).getLexeme() + '</h1>';
 
 function applyFunction(vector, f) { //f is in PDA notation
     var appliedVector = Vector();

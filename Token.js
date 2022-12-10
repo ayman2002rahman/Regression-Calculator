@@ -1,5 +1,5 @@
-//Maybe reorgine the switches into if else statements to make it more consice for sets sicne there is a lot of repeated code
-class Token {
+//Maybe reorgine the switches into if else statements to make it more consice for sets since there is a lot of repeated code
+export class Token {
     constructor(lexeme) {
         this.lexeme = lexeme //Lexeme is a charcter for both types
         switch(lexeme) {
@@ -100,6 +100,6 @@ class Token {
         return this.leftAssociativity;
     }
 }
-module.exports = Token;
+//module.exports = Token;
 
 //perhaps can add more elementry functrions like inverse trig and hyperbolic trig later
