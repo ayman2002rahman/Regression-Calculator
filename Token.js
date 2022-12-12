@@ -89,6 +89,7 @@ export class Token {
     }
     setLexeme(lexeme) {
         this.lexeme = lexeme;
+        return;
     }
     getType() {
         return this.type;
@@ -98,6 +99,9 @@ export class Token {
     }
     getleftAssociativity() {
         return this.leftAssociativity;
+    }
+    copy() {
+        return new Token(this.lexeme);
     }
 }
 //module.exports = Token;

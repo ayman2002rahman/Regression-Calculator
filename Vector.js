@@ -1,4 +1,4 @@
-class Vector {
+export class Vector {
     constructor(vector) {
         this.vector = vector;
     }
@@ -13,24 +13,25 @@ class Vector {
 
     append(component) {
         this.vector.push(component);
+        //console.log(component);
     }
 
     magnitude() {
         var sum = 0;
         for(var i = 0; i < this.vector.length; i++)
-            sum += vector[i] ** 2;
+            sum += this.vector[i] ** 2;
         return Math.sqrt(sum);
     }
 
     dotProduct(other) {
         if(this.vector.length != other.vector.length)
             throw "cannot computer dot product of vectors with different dimensions";
-        sum = 0;
+        var sum = 0;
         for(var i = 0; i < this.vector.length; i++)
             sum += this.vector[i] * other.vector[i];
         return sum;
     }
-
+    /*
     dotProduct(u, v) {
         if(u.vector.length != v.vector.length)
             throw "cannot computer dot product of vectors with different dimensions";
@@ -38,6 +39,6 @@ class Vector {
         for(var i = 0; i < u.vector.length; i++)
             sum += u.vector[i] * v.vector[i];
         return sum;
-    }
+    }*/
 }
-module.exports = Token;
+//module.exports = Token;

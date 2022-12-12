@@ -5,6 +5,7 @@
 //const Vector = require("./Vector.js");
 //import { Token } from './Vector.js';
 import { Token } from '/Token.js'
+import { Vector } from './Vector.js'
 
 function peek(stack) {
     return stack[stack.length - 1];
@@ -38,7 +39,6 @@ function shuntingYardAlgorithm(tokens) {
             //Check "function" type token here. Ex: sin(x) log(x) ln(x) x!
             if(operatorStack.length > 0) {
                 if(peek(operatorStack).getType() == "function") {
-                    //console.log("pushed");
                     output.push(operatorStack.pop());
                 }
             }
@@ -50,6 +50,7 @@ function shuntingYardAlgorithm(tokens) {
     return output;
 }
 
+//returns the token of the evaluated RPN
 function evaluateRPN(expression) { //expression is an array of tokens in RPN
     if(expression.length == 1) //there are no operators in the expression and there is only one number
         return expression[0];
@@ -124,32 +125,29 @@ function evaluateRPN(expression) { //expression is an array of tokens in RPN
 //Be careful with inputs that are no tin the domain (need to catch that and throw some error in this function
 //Evaluates the equation at a specified x value
 //Ex: if the equation is 2/(x^2) then evaluating it at x = 3 returns 0.22222
-function evaluateEquation(expression, x) {
+function evaluateEquation(expression, x) { // WE ARE ACCIDRNTLY CHANGING THE Xs PERMANENTLY
     //Loops through the expression array and replaces the "x" tokens with the value inputed for x
-    for(var i = 0; i < expression.length; i++) {
-        if(expression[i].getLexeme() == "x")
-            expression[i].setLexeme(x.toString());
+    var replacedExpression = [];
+    for(let i = 0; i < expression.length; i++)
+        replacedExpression.push(expression[i].copy()); // Need a copy constructor for 
+    for(let i = 0; i < replacedExpression.length; i++) {
+        if(replacedExpression[i].getLexeme() == "x")
+            replacedExpression[i].setLexeme(x.toString());
     }
-    return evaluateRPN(expression);
+    return evaluateRPN(replacedExpression).getLexeme();
 }
 //---------------------------------------------
-var expression = [new Token("3"), new Token("+"), new Token("4"), new Token("*"), new Token("2"), new Token("/"), new Token("("), new Token("1"), new Token("-"), new Token("5"), new Token(")"), new Token("^"), new Token("2"), new Token("^"), new Token("3")];
-
-/*
-var rpn = shuntingYardAlgorithm(expression);
-console.log(evaluateRPN(rpn).getLexeme());*/
-
+//var expression = [new Token("3"), new Token("+"), new Token("4"), new Token("*"), new Token("2"), new Token("/"), new Token("("), new Token("1"), new Token("-"), new Token("5"), new Token(")"), new Token("^"), new Token("2"), new Token("^"), new Token("3")];
 //var equation = [new Token("x"), new Token("^"), new Token("2")];
 //var equation = [new Token("4"), new Token("+"), new Token("log"), new Token("("), new Token("x"), new Token(")")];
-var equation = [new Token("sin"), new Token("x"), new Token("^"), new Token("2")];
-document.body.innerHTML = '<h1>' + evaluateEquation(shuntingYardAlgorithm(equation), 3.1415).getLexeme() + '</h1>';
+//var equation = [new Token("sin"), new Token("x"), new Token("^"), new Token("2")];
+//document.body.innerHTML = '<h1>' + evaluateEquation(shuntingYardAlgorithm(equation), 3.1415) + '</h1>';
 
-function applyFunction(vector, f) { //f is in PDA notation
-    var appliedVector = Vector();
-    for(var i = 0; i < vector.getDimensions(); i++) {
-        appliedVector.append(evaluateEquation(f, vector.getComponenet(i)));
-    }
-    return appliedVector;
+function applyFunction(vector, pdaEquation) { //f is in not PDA notation
+    var appliedVector = [];
+    for(var i = 0; i < vector.dimensions(); i++)
+        appliedVector.push(evaluateEquation(pdaEquation, vector.getComponenet(i)));
+    return new Vector(appliedVector);
 }
 
 //Pre-condition: x.length == y.length, f is a valid math equation in infix notation (list of tokens)
@@ -158,7 +156,7 @@ function calculateLeadingCoefficient(x, y, f) {
     var xValues = new Vector(x);
     var yValues = new Vector(y);
     var appliedFunctionValues = applyFunction(xValues, pdaEquation);
-    return appliedFunctionValues.dotProduct(yValues) / appliedFunctionValues.magnitude() ** 2;
+    return appliedFunctionValues.dotProduct(yValues) / appliedFunctionValues.magnitude() ** 2; //Formula is correct
 }
 
 function calculateCoefficientOfDetermination(x, y, f) {
@@ -168,8 +166,11 @@ function calculateCoefficientOfDetermination(x, y, f) {
 function calculateRegressionStats() {
 
 }
-/*
-x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-y = [3, 6, 2, 8, 16, 3, 7, 9, 12, 7];
-var equation = [new Token("x")];
-console.log(calculateLeadingCoefficient(x, y, equation));*/
+
+var x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var y = [3, 6, 2, 8, 16, 3, 7, 9, 12, 7];
+var equation = [new Token("x"), new Token("^"), new Token("3")];
+
+document.body.innerHTML = '<h1>' + calculateLeadingCoefficient(x, y, equation) + '</h1>';
+
+
