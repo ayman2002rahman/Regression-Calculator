@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            Regression Calculator
-        </title>
+        <title>Regression Calculator</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     </head>
     <body>
-        <h1>
-            Hello World WOW
-        </h1>
+        <h1>Regression Calculator for Statistical Data</h1>
+        <h3>This calculator regresses your data against any given function you define.</h3>
+
+        <label>Enter the x values of the data points seperated by singular spaces</label><br>
+        <input type = "text" id = "xValues"><br><br>
+
+        <label>Enter the y values of the data points seperated by singular spaces</label><br>
+        <input type = "text" id = "yValues"><br><br>
+
+        <label>Enter a function:</label><br>
+        <input type = "text" id = "userInput"><br><br>
+        <button type = "button" id = "calculate">Calculate Stats</button>
         <script type = "module" src = "main.js"></script>
     </body>
 </html>

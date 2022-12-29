@@ -355,18 +355,22 @@ function calculateRegressionStats() {
 
 }
 
-//Example of the prgram calculating the leading coefficient for any function and data points
-var x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 5];
-var y = [3, 6, 2, 8, 16, 3, 7, 9, 12, 7, 2.5];
-var userInput = "log(x)";
-
-try {
-    var equation = stringToTokenArray(userInput);
-    validateTokenArray(equation);
-    validateFunctionOfX(equation);
-    document.body.innerHTML = '<h1>' + calculateLeadingCoefficient(x, y, equation) + '</h1>';
+// xValues = 1 2 3 4 5 6 7 8 9 10 5
+// yValues = 3 6 2 8 16 3 7 9 12 7 2.5
+document.getElementById("calculate").onclick = function() {
+    console.log("clicked");
+    var xValues = document.getElementById("xValues").value;
+    var yValues = document.getElementById("yValues").value;
+    var x = xValues.split(' ');
+    var y = yValues.split(' ');
+    var userInput = document.getElementById("userInput").value;
+    try {
+        var equation = stringToTokenArray(userInput);
+        validateTokenArray(equation);
+        validateFunctionOfX(equation);
+        document.body.innerHTML = '<h1>' + calculateLeadingCoefficient(x, y, equation) + '</h1>';
+    }
+    catch(err) {
+        window.alert('Invalid inputs');
+    }
 }
-catch(err) {
-    document.body.innerHTML = '<h1>Invalid math expression</h1>';
-}
-
