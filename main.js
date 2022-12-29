@@ -110,7 +110,7 @@ function stringToTokenArray(equation) { //Takes in the user input string, reads 
     return array;
 }
 
-function validateTokenArray(tokensInput) {//Checks the token array to make sure that is in the CFG. Throw user errors if its not.
+function validateTokenArray(tokensInput) {//Checks the token array to make sure that is in the CFG. Throws syntax errors if its not.
     var tokens = [];
     for(let i = 0; i < tokensInput.length; i++)
         tokens.push(new Token(tokensInput[i].getLexeme()));
@@ -368,7 +368,7 @@ document.getElementById("calculate").onclick = function() {
         var equation = stringToTokenArray(userInput);
         validateTokenArray(equation);
         validateFunctionOfX(equation);
-        document.body.innerHTML = '<h1>' + calculateLeadingCoefficient(x, y, equation) + '</h1>';
+        document.getElementById("coefficient").innerHTML = 'Leading Constant: ' + calculateLeadingCoefficient(x, y, equation);
     }
     catch(err) {
         window.alert('Invalid inputs');
